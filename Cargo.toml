@@ -13,3 +13,6 @@ homepage = "https://github.com/btasc/Laytrace" # Repo link
 readme = "README.md" # Explanation
 keywords = ["wgpu", "raytracing", "graphics", "wgsl", "compute"] # Keywords for discovery on crates.io
 categories = ["graphics", "rendering"] # Categories for crates
+
+[dependencies]
+thiserror = "2.0.17"
