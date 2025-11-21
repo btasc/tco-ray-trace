@@ -1,0 +1,9 @@
+[directories]
+model_folders = [
+    "dirone/subdir",
+    "dirone/anothersubdir"
+]
+
+[[models]]
+name = "Explicit model"
+path = "dirone/moresubdirs/square.obj"

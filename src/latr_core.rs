@@ -1,17 +1,11 @@
 use crate::{
-    error::{
-        LatrError,
-        WindowError,
-    },
+    error::{ LatrError, WindowError, },
+    config::LatrConfig,
     engine::engine_core::Engine,
     gpu_utils::gpu_core::GpuCore,
 };
 
 use std::sync::Arc;
-
-use winit::event_loop::EventLoop;
-use winit::window::{ResizeDirection, Window, WindowBuilder};
-use crate::config::LatrConfig;
 
 pub struct LatrEngine {
     engine_core: Engine,
@@ -35,9 +29,9 @@ impl LatrEngine {
     }
 
     fn make_window_event_loop() -> Result<(Arc<winit::window::Window>, winit::event_loop::EventLoop<()>), WindowError> {
-        let event_loop = EventLoop::new()?;
+        let event_loop = winit::event_loop::EventLoop::new()?;
 
-        let window_arc = Arc::new(WindowBuilder::new()
+        let window_arc = Arc::new(winit::window::WindowBuilder::new()
             .build(&event_loop)?);
 
         Ok((window_arc, event_loop))

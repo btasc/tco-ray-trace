@@ -10,6 +10,9 @@ pub enum LatrError {
     
     #[error("The Engine ran into an error: {0}")]
     Engine(#[from] EngineError),
+    
+    #[error("The configuration ran into an error: {0}")]
+    Config(#[from] ConfigError),
 }
 
 #[derive(thiserror::Error, Debug)]
@@ -23,7 +26,12 @@ pub enum WindowError {
 
 #[derive(thiserror::Error, Debug)]
 pub enum EngineError {
+    
+}
 
+#[derive(thiserror::Error, Debug)]
+pub enum ConfigError {
+    
 }
 
 #[derive(thiserror::Error, Debug)]
