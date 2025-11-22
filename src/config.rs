@@ -10,6 +10,8 @@ pub struct LatrConfig {
     pub resolution: (u32, u32),
     pub num_rays: (u32, u32),
     pub run_mode: RunMode,
+
+    pub model_config: Option<ModelConfig>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -19,8 +21,13 @@ struct ExplicitModelConfig {
 }
 
 #[derive(Deserialize, Debug)]
+struct DirectoriesConfig {
+    model_folders: Vec<String>,
+}
+
+#[derive(Deserialize, Debug)]
 struct ModelConfig {
-    directories: Vec<String>,
+    directories: DirectoriesConfig,
     models: Vec<ExplicitModelConfig>,
 }
 
@@ -34,14 +41,17 @@ impl Default for LatrConfig {
             resolution,
             num_rays,
             run_mode: RunMode::default(),
+            model_config: None,
         }
     }
 }
 
 impl LatrConfig {
-    pub fn load_models(&mut self, path: std::path::PathBuf) -> Result<(), ConfigError> {
-        
+    pub fn load_models(&mut self, config_path: std::path::PathBuf) -> Result<(), ConfigError> {
+        let toml_string = std::fs::read_to_string(config_path)?;
+        let model_config: ModelConfig = toml::from_str(toml_string.as_str())?;
 
+        self.model_config = Some(model_config);
         Ok(())
     }
 }

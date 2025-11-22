@@ -1,7 +1,10 @@
-use latr::main_func;
-use latr::error::LatrError;
 
-fn main() -> Result<(), LatrError> {
-    main_func()?;
+
+fn main() -> Result<(), latr::LatrError> {
+    let mut config = latr::LatrConfig::default();
+    config.load_models("ModelConfig.toml".into())?;
+
+    let mut engine = latr::LatrEngine::new(&config)?;
+
     Ok(())
 }
