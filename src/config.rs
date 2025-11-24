@@ -1,5 +1,6 @@
 use crate::error::ConfigError;
 use serde::Deserialize;
+use crate::{LatrEngine, LatrError};
 
 // Config that specifies all settings for running
 // Has default implemented so you can just select a few things
@@ -10,8 +11,9 @@ pub struct LatrConfig {
     pub resolution: (u32, u32),
     pub num_rays: (u32, u32),
     pub run_mode: RunMode,
+    pub physics_func: Option<fn(&mut LatrEngine) -> Result<(), LatrError>>,
 
-    pub model_config: Option<ModelConfig>,
+    model_config: Option<ModelConfig>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -42,6 +44,7 @@ impl Default for LatrConfig {
             num_rays,
             run_mode: RunMode::default(),
             model_config: None,
+            physics_func: None,
         }
     }
 }
@@ -53,6 +56,10 @@ impl LatrConfig {
 
         self.model_config = Some(model_config);
         Ok(())
+    }
+    
+    pub fn load_physics(&mut self, physics_sim: fn(&mut LatrEngine) -> Result<(), LatrError>) {
+        self.physics_func = Some(physics_sim);
     }
 }
 
