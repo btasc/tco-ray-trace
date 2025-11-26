@@ -18,7 +18,7 @@ pub enum LatrError {
 #[derive(thiserror::Error, Debug)]
 pub enum WindowError {
     #[error("Error occurred with event loop when initializing Winit window: {0}")]
-    EventLoopInit(#[from] winit::error::EventLoopError),
+    EventLoop(#[from] winit::error::EventLoopError),
 
     #[error("Error occurred when building Winit window with Winit: {0}")]
     WindowInit(#[from] winit::error::OsError),

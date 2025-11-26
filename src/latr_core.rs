@@ -62,12 +62,4 @@ impl LatrEngine {
 
         Ok((window_arc, event_loop))
     }
-
-    pub fn run_physics(&mut self) -> Result<(), LatrError> {
-        if let Some(physics_fn) = self.config.physics_func {
-            physics_fn(self)?;
-        }
-
-        Ok(())
-    }
 }

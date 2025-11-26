@@ -1,16 +1,20 @@
-
+use latr::{ LatrEngine, LatrConfig };
 
 fn main() -> Result<(), latr::LatrError> {
-    let mut config = latr::LatrConfig::default();
-    config.load_models("ModelConfig.toml".into())?;
-    config.load_physics(physics_sim);
+    let mut config = LatrConfig {
+        ..Default::default()
+    };
 
-    let mut engine = latr::LatrEngine::new(config)?;
+    let state = SimState {
+        x: "hello!"
+    };
 
-    engine.start()
+    let mut engine = LatrEngine::new(config)?
+        .load_physics(state)
+        .start();
 }
 
-fn physics_sim(en: &mut latr::LatrEngine) -> Result<(), latr::LatrError> {
-
-    Ok(())
+struct SimState {
+    x: &'static str,
 }
+

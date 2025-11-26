@@ -6,6 +6,8 @@ use crate::{
     gpu_utils::gpu_core::GpuCore,
 };
 
+use winit::event_loop::EventLoopWindowTarget;
+
 use std::sync::Arc;
 
 pub fn run_event_loop(
@@ -16,5 +18,33 @@ pub fn run_event_loop(
     event_loop: winit::event_loop::EventLoop<()>,
 ) -> Result<(), LatrError> {
 
-    Err(LatrError::Window(WindowError::EventLoopExited))
+    let res = event_loop.run(move |event, elwt: &EventLoopWindowTarget<()>| {
+        match event {
+
+            winit::event::Event::WindowEvent { window_id, event }
+            if window_id == window.id() =>
+                {
+                    match event {
+                        winit::event::WindowEvent::CloseRequested => {
+                            println!("Close button was pressed - Exiting.");
+                            elwt.exit();
+                        }
+
+                        winit::event::WindowEvent::RedrawRequested => {
+
+                        }
+
+                        _ => ()
+                    }
+                }
+            
+
+            _ => ()
+        }
+    });
+
+    match res {
+        Ok(()) => Ok(()),
+        Err(e) => Err(LatrError::Window(WindowError::EventLoop(e))),
+    }
 }
