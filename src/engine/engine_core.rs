@@ -6,18 +6,11 @@ use crate::{LatrEngine, LatrError};
 // This way the user doesn't have to be like "engine.engine.run_op", and doesn't have to deal with EngineError vs LatrError
 
 pub struct Engine {
-    pub physics_loop: Option<Box<dyn PhysicsLoop>>,
+    
 }
 
 impl Engine {
-    pub fn new(config: &LatrConfig, physics_loop: Option<Box<dyn PhysicsLoop>>) -> Result<Self, EngineError> {
-
-        Ok(Self {
-            physics_loop,
-        })
-    }
-
-    pub fn run_physics(&self, latr_engine: LatrEngine) -> Result<(), LatrError> {
-
+    pub fn new(config: &LatrConfig) -> Self {
+        Self {}
     }
 }

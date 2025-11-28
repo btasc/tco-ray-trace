@@ -1,21 +1,17 @@
-use latr::{ LatrEngine, LatrConfig, PhysicsLoop, Physics };
+use latr::{ LatrEngine, LatrConfig, LatrError, PhysicsLoop, Physics };
 
 fn main() -> Result<(), latr::LatrError> {
+    let state = SimState {
+        x: "hello!",
+    };
+
     let mut config = LatrConfig {
         run_mode: latr::RunMode::Headless,
-        physics: Some(SimState)
+        physics: Some(Box::new(state))
         ..Default::default()
     };
 
-    let state = SimState {
-        x: "hello!"
-    };
-
-    let physics = Physics::new();
-
-    let mut engine = LatrEngine::new(config)?
-        .load_physics(Box::new(state))
-        .start();
+    let mut engine = LatrEngine::start(config)?;
 }
 
 struct SimState {

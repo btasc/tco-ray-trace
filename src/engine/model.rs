@@ -1,5 +1,8 @@
 use tobj;
 
+// This file is unfinished
+// Ill get back to it when I start on gpu collision shaders
+
 pub struct Model {
     name: Option<String>,
     verticies: Vec<f32>,

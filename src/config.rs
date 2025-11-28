@@ -1,15 +1,33 @@
 use serde::Deserialize;
-use crate::{LatrEngine, LatrError};
+
+use crate::{
+    error::LatrError,
+    latr_core::LatrEngine,
+    engine::{ 
+        physics::{ PhysicsLoop, Physics }, 
+        engine_core::Engine, 
+    },
+};
 
 // Config that specifies all settings for running
 // Has default implemented so you can just select a few things
 // Also contains all the blueprints for different models that we will use
-#[derive(Debug)]
 pub struct LatrConfig {
     pub fps_cap: u32,
     pub resolution: (u32, u32),
     pub num_rays: (u32, u32),
     pub run_mode: RunMode,
+    pub physics: Option<Box<dyn PhysicsLoop>>,
+}
+
+impl LatrConfig {
+    pub fn get_physics(self, engine: &mut Engine) -> Option<Physics> {
+        if let Some(physics) = self.physics {
+            Some(Physics::new(physics, engine))
+        } else {
+            None
+        }
+    }
 }
 
 impl Default for LatrConfig {
@@ -22,6 +40,7 @@ impl Default for LatrConfig {
             resolution,
             num_rays,
             run_mode: RunMode::default(),
+            physics: None,
         }
     }
 }
@@ -34,7 +53,12 @@ pub enum RunMode {
     // Gui is the normal run mode with full features and screen
     Gui,
 
-    // Headless is a testing mode that removes the screen, allowing faster testing
+    // NoWinit is a testing mode that removes the screen, allowing faster testing
+    // Does still have the gpu and everything that comes with it, just no winit
+    // Gpu writes to nothing
+    NoWinit,
+
+    // Headless is a mode that removes the gpu, and just runs the engine and phys loop
     Headless,
 }
 

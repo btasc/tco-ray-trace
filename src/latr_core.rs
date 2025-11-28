@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 pub struct LatrEngine {
     config: LatrConfig,
-    physics: Physics,
+    physics: Option<Physics>,
 
     engine_core: Engine,
     gpu_core: GpuCore,
@@ -27,8 +27,10 @@ impl LatrEngine {
             gpu_core,
             window,
             event_loop,
+            physics,
         } = self;
 
+        // Need to implement physics in this part
         run_event_loop(
            config,
            engine_core,
@@ -40,16 +42,18 @@ impl LatrEngine {
         Ok(())
     }
 
-    pub fn new(latr_config: LatrConfig, physics: Physics) -> Result<Self, LatrError> {
+    pub fn new(latr_config: LatrConfig) -> Result<Self, LatrError> {
         let (window, event_loop) = Self::make_window_event_loop()?;
         
         let gpu_core = GpuCore::new(&latr_config, window.clone())?;
-        let engine_core = Engine::new(&latr_config)?;
+        let mut engine_core = Engine::new(&latr_config);
+
+        let physics = latr_config.get_physics(&mut engine_core);
 
         let config = latr_config;
 
         Ok(Self {
-            config,
+            config, physics,
             gpu_core, engine_core,
             window, event_loop,
         })
