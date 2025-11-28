@@ -1,3 +1,3 @@
 pub mod engine_core;
 mod collision;
-mod model;
+pub mod physics;

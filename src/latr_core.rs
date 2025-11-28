@@ -1,7 +1,7 @@
 use crate::{
     error::{ LatrError, WindowError, },
     config::LatrConfig,
-    engine::engine_core::Engine,
+    engine::{ engine_core::Engine, physics::Physics },
     gpu_utils::gpu_core::GpuCore,
     event_loop::run_event_loop,
 };
@@ -10,6 +10,7 @@ use std::sync::Arc;
 
 pub struct LatrEngine {
     config: LatrConfig,
+    physics: Physics,
 
     engine_core: Engine,
     gpu_core: GpuCore,
@@ -39,7 +40,7 @@ impl LatrEngine {
         Ok(())
     }
 
-    pub fn new(latr_config: LatrConfig) -> Result<Self, LatrError> {
+    pub fn new(latr_config: LatrConfig, physics: Physics) -> Result<Self, LatrError> {
         let (window, event_loop) = Self::make_window_event_loop()?;
         
         let gpu_core = GpuCore::new(&latr_config, window.clone())?;

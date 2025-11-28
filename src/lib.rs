@@ -8,5 +8,6 @@ mod config;
 pub use crate::{
     error::LatrError,
     latr_core::LatrEngine,
-    config::LatrConfig,
+    config::{ LatrConfig, RunMode },
+    engine::engine_core::{ PhysicsLoop, Physics },
 };
